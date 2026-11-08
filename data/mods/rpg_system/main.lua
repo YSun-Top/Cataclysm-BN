@@ -79,11 +79,34 @@ local function color_info(text) return color_text(text, "light_cyan") end
 local function color_highlight(text) return color_text(text, "white") end
 
 local function create_progress_bar(current, max, width)
-  width = math.floor(width or 20)
-  local filled = math.floor((current / max) * width)
+  width = math.floor(tonumber(width) or 20)
+  width = math.max(1, math.min(width, 200))
+
+  current = tonumber(current) or 0
+  max = tonumber(max) or 0
+
+  -- 防止 NaN、无穷大以及 max <= 0
+  if current ~= current or current == math.huge or current == -math.huge then
+    current = 0
+  end
+
+  if max ~= max or max == math.huge or max == -math.huge or max <= 0 then
+    return string.format(
+      "[%s] 0%%",
+      color_text(string.rep("░", width), "dark_gray")
+    )
+  end
+
+  -- 限制比例，避免负数或超过最大值
+  local ratio = math.max(0, math.min(current / max, 1))
+  local filled = math.floor(ratio * width)
   local empty = width - filled
-  local bar = color_good(string.rep("█", filled)) .. color_text(string.rep("░", empty), "dark_gray")
-  local percent = math.floor((current / max) * 100)
+  local percent = math.floor(ratio * 100)
+
+  local bar =
+    color_good(string.rep("█", filled)) ..
+    color_text(string.rep("░", empty), "dark_gray")
+
   return string.format("[%s] %d%%", bar, percent)
 end
 
@@ -113,12 +136,13 @@ end
 
 -- Experience Curve Functions for Levels 1-40
 -- Formula: XP = 2.2387 * level^3.65
-local XP_COEFFICIENT = 2.2387
-local XP_EXPONENT = 3.65
+local XP_COEFFICIENT = 1.1
+local XP_EXPONENT = 2.65
+local MAX_LEVEL = 80
 
 -- Progression Constants
-local LEVELS_PER_STAT_POINT = 2
-local LEVELS_PER_TRAIT_SLOT = 5
+local LEVELS_PER_STAT_POINT = 1
+local LEVELS_PER_TRAIT_SLOT = 1
 
 -- Function to register a new mutation with the RPG system (can be called by other mods)
 -- config: table with mutation properties (id, type, symbol, requirements, stat_bonuses, etc.)
@@ -145,7 +169,7 @@ end
 
 local function get_rpg_level(exp)
   local level = math.floor((exp / XP_COEFFICIENT) ^ (1 / XP_EXPONENT))
-  return math.min(level, 40)
+  return math.min(level, MAX_LEVEL)
 end
 
 local function rpg_xp_needed(level)
@@ -626,7 +650,7 @@ mod.open_rpg_menu = function(params)
 
     info_text = info_text .. color_highlight(gettext("Name:") .. " ") .. color_good(player_name) .. "\n"
     info_text = info_text .. color_highlight(gettext("Level:") .. " ") .. color_good(string.format("%d", level))
-    if level < 40 then
+    if level < MAX_LEVEL then
       info_text = info_text
         .. color_text(
           string.format(" (" .. gettext("Next:") .. " %.0f " .. gettext("XP") .. ")", xp_to_next),
@@ -637,7 +661,7 @@ mod.open_rpg_menu = function(params)
     end
     info_text = info_text .. "\n"
 
-    if level < 40 then
+    if level < MAX_LEVEL then
       local progress = create_progress_bar(xp_in_level, xp_for_level, 30)
       info_text = info_text .. "XP: " .. progress .. "\n"
     end

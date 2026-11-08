@@ -458,5 +458,55 @@
     "valid": false,
     "purifiable": false,
     "player_display": true
-  }
+  },
+  {
+    "type": "mutation",
+    "id": "STR_UP",
+    "name": "[力量增加]",
+    "points": 0,
+    "description": "力量每级+0.5",
+    "valid": false,
+    "purifiable": false,
+    "player_display": true
+    },
+  {
+    "type": "mutation",
+    "id": "DEX_UP",
+    "name": "[敏捷增加]",
+    "points": 0,
+    "description": "敏捷每级+0.5",
+    "valid": false,
+    "purifiable": false,
+    "player_display": true
+    },
+  {
+    "type": "mutation",
+    "id": "INT_UP",
+    "name": "[智力增加]",
+    "points": 0,
+    "description": "智力每级+0.5",
+    "valid": false,
+    "purifiable": false,
+    "player_display": true
+    },
+  {
+    "type": "mutation",
+    "id": "PER_UP",
+    "name": "[感知增加]",
+    "points": 0,
+    "description": "感知每级+0.5",
+    "valid": false,
+    "purifiable": false,
+    "player_display": true
+    },
+  {
+    "type": "mutation",
+    "id": "SPEED_UP",
+    "name": "[速度增加]",
+    "points": 0,
+    "description": "速度每级+1",
+    "valid": false,
+    "purifiable": false,
+    "player_display": true
+    }
 ]

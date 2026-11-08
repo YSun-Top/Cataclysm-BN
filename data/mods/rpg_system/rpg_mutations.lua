@@ -386,6 +386,36 @@ local MUTATIONS = {
     requirements = { level = 10, stats = { PER = 16 } },
     kill_monster_bonuses = { heal_percent = 0.5 },
   }),
+  STR_UP = Mutation.new({
+    id = "STR_UP",
+    type = "trait",
+    requirements = {},
+    stat_bonuses = { str = 0.5 },
+  }),
+  DEX_UP = Mutation.new({
+    id = "DEX_UP",
+    type = "trait",
+    requirements = {},
+    stat_bonuses = { dex = 0.5},
+  }),
+  INT_UP = Mutation.new({
+    id = "INT_UP",
+    type = "trait",
+    requirements = {},
+    stat_bonuses = { int = 0.5},
+  }),
+  PER_UP = Mutation.new({
+    id = "PER_UP",
+    type = "trait",
+    requirements = {},
+    stat_bonuses = { per = 0.5},
+  }),
+  SPEED_UP = Mutation.new({
+    id = "SPEED_UP",
+    type = "trait",
+    requirements = {},
+    stat_bonuses = { speed = 0.5},
+  })
 }
 
 -- Derived lists
