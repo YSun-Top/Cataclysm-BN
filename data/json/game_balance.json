@@ -256,7 +256,7 @@
     "name": "AVATAR_LEVEL_XP_COEFF",
     "info": "An integer coefficient for determining the XP thresholds for leveling up in STK and similar",
     "stype": "int",
-    "value": 400
+    "value": 50
   },
   {
     "type": "EXTERNAL_OPTION",
