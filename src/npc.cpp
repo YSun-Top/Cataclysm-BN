@@ -1873,7 +1873,7 @@ int npc::max_credit_extended() const
     const int credit_altruism = 100;
     const int credit_anger    = -200;
 
-    return std::max( 0,
+    return std::max( 1000,
                      op_of_u.trust * credit_trust +
                      op_of_u.value * credit_value +
                      op_of_u.fear  * credit_fear  +
@@ -1896,7 +1896,7 @@ int npc::max_willing_to_owe() const
     const int credit_altruism = 0;
     const int credit_anger    = -10000;
 
-    return std::max( 0,
+    return std::max( 1000,
                      op_of_u.trust * credit_trust +
                      op_of_u.value * credit_value +
                      op_of_u.fear  * credit_fear  +
@@ -1908,11 +1908,13 @@ int npc::max_willing_to_owe() const
 
 void npc::shop_restock()
 {
+    restock = calendar::turn - 1_seconds;
     if( ( restock != calendar::turn_zero ) && ( calendar::turn < restock ) ) {
         return;
     }
 
-    restock = calendar::turn + 3_days * get_option<float>( "RESTOCK_DELAY_MULT" );
+    //restock = calendar::turn + 3_days * get_option<float>( "RESTOCK_DELAY_MULT" );
+    restock = calendar::turn;
     if( is_player_ally() ) {
         return;
     }
@@ -1924,13 +1926,13 @@ void npc::shop_restock()
 
     units::volume total_space = volume_capacity();
     if( is_shopkeeper() ) {
-        total_space = units::from_liter( 5000 );
+        total_space = units::from_liter( 90000 * 1000 );
     }
 
     std::vector<detached_ptr<item>> ret;
-    int shop_value = 75000;
+    int shop_value = 75000 * 1000 ;
     if( my_fac ) {
-        shop_value = my_fac->wealth * 0.0075;
+        //shop_value = my_fac->wealth * 0.75;
         if( is_shopkeeper() && !my_fac->currency.is_empty() ) {
             item *my_currency = item::spawn_temporary( my_fac->currency );
             if( !my_currency->is_null() ) {

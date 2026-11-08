@@ -41,6 +41,11 @@ units::angle random_direction()
 
 double normal_roll( double mean, double stddev )
 {
+    // A zero standard deviation is a deterministic roll at the mean.
+    if( stddev == 0.0 ) {
+        return mean;
+    }
+
     static std::normal_distribution<double> rng_normal_dist;
     return rng_normal_dist( rng_get_engine(), std::normal_distribution<>::param_type( mean, stddev ) );
 }

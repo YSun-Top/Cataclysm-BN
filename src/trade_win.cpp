@@ -1344,9 +1344,7 @@ auto trading_window::perform_trade( npc &np, const std::string &deal ) -> bool
         } else if( action == "CONFIRM" ) {
             if( !npc_trading::npc_will_accept_trade( state, np ) ) {
 
-                if( np.max_credit_extended() == 0 ) {
-                    popup( _( "You'll need to offer me more than that." ) );
-                } else {
+                if( np.max_credit_extended() != 0 ) {
                     popup(
                         _( "Sorry, I'm only willing to extend you %s in credit." ),
                         format_money( np.max_credit_extended() )
